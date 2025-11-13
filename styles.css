@@ -54,9 +54,9 @@ main,
 }
 
 .greeting {
-  font-size: 0.95rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+  font-size: var(--font-small);
   color: var(--muted);
   margin-bottom: 0.5rem;
 }
