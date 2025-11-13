@@ -154,11 +154,11 @@
   })();
 </script>
   <script>
-  const GUESTBOOK_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+  const GUESTBOOK_URL = "https://script.google.com/macros/s/AKfycbzNSnF6DxeR6qpLt91Ac6rcJgGBs4II7-SFNcp_wPxGsp9oEW6ayol1cG-tuqAhbbpp/exec";
 
   async function loadGuestbook() {
     try {
-      const res = await fetch(https://script.google.com/macros/s/AKfycbzNSnF6DxeR6qpLt91Ac6rcJgGBs4II7-SFNcp_wPxGsp9oEW6ayol1cG-tuqAhbbpp/exec);
+      const res = await fetch(GUESTBOOK_URL);
       const messages = await res.json();
       const list = document.getElementById("guestbook-list");
       if (!list) return;
