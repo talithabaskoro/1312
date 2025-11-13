@@ -90,8 +90,10 @@ main,
 
 .names {
   font-family: "Playfair Display", "Times New Roman", serif;
-  font-size: var(--font-h1);
+  /* golden-ratio max size, but shrink on small screens */
+  font-size: clamp(var(--font-h2), 7vw, var(--font-h1));
   margin: 0 0 0.5rem;
+  white-space: nowrap;        /* keep in one line */
 }
 
 .date {
