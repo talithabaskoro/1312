@@ -116,21 +116,45 @@
 <section id="guestbook" class="section section-guestbook">
   <h2>Ucapan &amp; Doa</h2>
   <p class="intro">
-    Tinggalkan ucapan atau doa untuk kami. Ucapan yang terkirim akan muncul di bawah ini.
+    Tinggalkan ucapan atau doa untuk kami. Ucapan akan tampil di bawah ini dan
+    bisa dibaca oleh semua tamu.
   </p>
 
-  <!-- Form (Google Form iframe) -->
-  <div class="guestbook-form">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfdtEc-Vwttb2QuluCYYQ5sCTFaL4VtkjLtDe3pPp3oYGLulQ/viewform?embedded=true" width="100%" height="480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-  </div>
+  <!-- Simple form (no Google UI) -->
+  <form id="guestbook-form" class="guestbook-form">
+    <div class="field-group">
+      <label for="guest-name">Nama</label>
+      <input
+        id="guest-name"
+        name="name"
+        type="text"
+        placeholder="Nama kamu"
+      />
+    </div>
 
-  <!-- List of messages rendered in our style -->
+    <div class="field-group">
+      <label for="guest-message">Ucapan / Doa</label>
+      <textarea
+        id="guest-message"
+        name="message"
+        rows="3"
+        placeholder="Tulis ucapan manis di sini…"
+        required
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary">Kirim Ucapan</button>
+    <p id="guestbook-status" class="guestbook-status" aria-live="polite"></p>
+  </form>
+
+  <!-- List of messages -->
   <ul id="guestbook-list" class="guestbook-list">
     <li class="guestbook-item guestbook-empty">
       Belum ada ucapan. Jadilah yang pertama!
     </li>
   </ul>
 </section>
+
 
   <footer class="footer">
     <p>Dengan penuh kasih,</p>
@@ -153,8 +177,20 @@
     }
   })();
 </script>
-  <script>
-  const GUESTBOOK_URL = "https://script.google.com/macros/s/AKfycbzNSnF6DxeR6qpLt91Ac6rcJgGBs4II7-SFNcp_wPxGsp9oEW6ayol1cG-tuqAhbbpp/exec";
+ <script>
+  const GUESTBOOK_URL = "https://script.google.com/macros/s/AKfycbyAamfIsCCpj4MQ8pjpnTivlr-_k8He4TLeGOhXrzYeZBJOKpEZrV2QOfnA5exmrfuQ/exec"; // from Apps Script
+
+  function escapeHtml(str) {
+    return (str || "").replace(/[&<>"']/g, function (m) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[m];
+    });
+  }
 
   async function loadGuestbook() {
     try {
@@ -164,27 +200,76 @@
       if (!list) return;
 
       if (!messages || messages.length === 0) {
-        list.innerHTML = '<li class="guestbook-item guestbook-empty">Belum ada ucapan. Jadilah yang pertama!</li>';
+        list.innerHTML =
+          '<li class="guestbook-item guestbook-empty">Belum ada ucapan. Jadilah yang pertama!</li>';
         return;
       }
 
-      // show latest 20, newest on top
-      const latest = messages.slice(-20).reverse();
+      // show latest 30, newest on top
+      const latest = messages.slice(-30).reverse();
+      let html = "";
 
-      list.innerHTML = latest.map(item => `
-        <li class="guestbook-item">
-          <p class="guestbook-message">"${item.message || ''}"</p>
-          <p class="guestbook-meta">
-            ${item.name || 'Tamu'} &middot; <span>${item.timestamp || ''}</span>
-          </p>
-        </li>
-      `).join('');
+      latest.forEach((item) => {
+        html += '<li class="guestbook-item">';
+        html +=
+          '<p class="guestbook-message">' +
+          escapeHtml(item.message || "") +
+          "</p>";
+        html +=
+          '<p class="guestbook-meta">' +
+          escapeHtml(item.name || "Tamu") +
+          " &middot; <span>" +
+          escapeHtml(item.timestamp || "") +
+          "</span></p>";
+        html += "</li>";
+      });
+
+      list.innerHTML = html;
     } catch (err) {
       console.error("Error loading guestbook:", err);
     }
   }
 
-  document.addEventListener("DOMContentLoaded", loadGuestbook);
+  document.addEventListener("DOMContentLoaded", () => {
+    loadGuestbook();
+
+    const form = document.getElementById("guestbook-form");
+    const statusEl = document.getElementById("guestbook-status");
+
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (statusEl) statusEl.textContent = "Mengirim…";
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+
+        try {
+          const res = await fetch(GUESTBOOK_URL, {
+            method: "POST",
+            body: data
+          });
+          const json = await res.json();
+
+          if (json.status === "success") {
+            if (statusEl)
+              statusEl.textContent = "Terima kasih atas ucapannya ❤️";
+            form.reset();
+            loadGuestbook(); // refresh list
+          } else {
+            if (statusEl)
+              statusEl.textContent =
+                "Maaf, terjadi kesalahan. Coba lagi sebentar lagi.";
+          }
+        } catch (err) {
+          console.error(err);
+          if (statusEl)
+            statusEl.textContent = "Maaf, tidak bisa terhubung ke server.";
+        }
+      });
+    }
+  });
 </script>
+
 </body>
 </html>
