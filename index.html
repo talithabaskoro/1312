@@ -116,34 +116,20 @@
 <section id="guestbook" class="section section-guestbook">
   <h2>Ucapan &amp; Doa</h2>
   <p class="intro">
-    Tinggalkan ucapan atau doa untuk kami. Semua ucapan yang dikirim akan tampil
-    di bawah, sehingga tamu lain juga bisa membacanya.
+    Tinggalkan ucapan atau doa untuk kami. Ucapan yang terkirim akan muncul di bawah ini.
   </p>
 
-  <div class="guestbook-grid">
-    <!-- LEFT: Form to send wishes -->
-    <div class="guestbook-form">
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSfdtEc-Vwttb2QuluCYYQ5sCTFaL4VtkjLtDe3pPp3oYGLulQ/viewform?embedded=true"
-        width="100%"
-        height="520"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0">
-        Loading…
-      </iframe>
-    </div>
-
-    <!-- RIGHT: Live list of wishes (from Sheet) -->
-    <div class="guestbook-responses">
-      <iframe
-        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRMZWTuyjEkzkixfL1jKY33rSN0voRtmyD99xZUTRoh_nlifaaIbE4Tl9964BlZ62s6jWLDr9f5jFSK/pubhtml?gid=1548334352&single=true"
-        width="100%"
-        height="520"
-        frameborder="0">
-      </iframe>
-    </div>
+  <!-- Form (Google Form iframe) -->
+  <div class="guestbook-form">
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfdtEc-Vwttb2QuluCYYQ5sCTFaL4VtkjLtDe3pPp3oYGLulQ/viewform?embedded=true" width="100%" height="480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
   </div>
+
+  <!-- List of messages rendered in our style -->
+  <ul id="guestbook-list" class="guestbook-list">
+    <li class="guestbook-item guestbook-empty">
+      Belum ada ucapan. Jadilah yang pertama!
+    </li>
+  </ul>
 </section>
 
   <footer class="footer">
@@ -166,6 +152,39 @@
       }
     }
   })();
+</script>
+  <script>
+  const GUESTBOOK_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+  async function loadGuestbook() {
+    try {
+      const res = await fetch(https://script.google.com/macros/s/AKfycbzNSnF6DxeR6qpLt91Ac6rcJgGBs4II7-SFNcp_wPxGsp9oEW6ayol1cG-tuqAhbbpp/exec);
+      const messages = await res.json();
+      const list = document.getElementById("guestbook-list");
+      if (!list) return;
+
+      if (!messages || messages.length === 0) {
+        list.innerHTML = '<li class="guestbook-item guestbook-empty">Belum ada ucapan. Jadilah yang pertama!</li>';
+        return;
+      }
+
+      // show latest 20, newest on top
+      const latest = messages.slice(-20).reverse();
+
+      list.innerHTML = latest.map(item => `
+        <li class="guestbook-item">
+          <p class="guestbook-message">"${item.message || ''}"</p>
+          <p class="guestbook-meta">
+            ${item.name || 'Tamu'} &middot; <span>${item.timestamp || ''}</span>
+          </p>
+        </li>
+      `).join('');
+    } catch (err) {
+      console.error("Error loading guestbook:", err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadGuestbook);
 </script>
 </body>
 </html>
