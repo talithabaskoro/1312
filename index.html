@@ -12,21 +12,6 @@
 
   <link rel="stylesheet" href="styles.css" />
 </head>
-  <script>
-  (function () {
-    const params = new URLSearchParams(window.location.search);
-    const invitee = params.get("to"); // e.g. ?to=Rani%20Pratama
-    const greetingEl = document.getElementById("greeting");
-
-    if (greetingEl) {
-      if (invitee && invitee.trim().length > 0) {
-        greetingEl.textContent = "Hi, " + invitee.trim();
-      } else {
-        greetingEl.textContent = "Hi, dear guest";
-      }
-    }
-  })();
-</script>
 <body>
   <header class="hero" id="top">
     <div class="hero-inner">
