@@ -53,6 +53,15 @@ main,
   padding-inline: 1.25rem;
 }
 
+.greeting {
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+
 /* HERO */
 
 .hero {
