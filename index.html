@@ -186,15 +186,21 @@
   <script>
   (function () {
     const params = new URLSearchParams(window.location.search);
-    const invitee = params.get("to"); // e.g. ?to=Rani%20Pratama
+    const inviteeRaw = params.get("to");
+    const invitee = inviteeRaw ? inviteeRaw.trim() : "";
+
     const greetingEl = document.getElementById("greeting");
+    const rsvpNameInput = document.getElementById("rsvp-name");
 
     if (greetingEl) {
-      if (invitee && invitee.trim().length > 0) {
-        greetingEl.textContent = "Hi, " + invitee.trim();
-      } else {
-        greetingEl.textContent = "Hi, dear guest";
-      }
+      greetingEl.textContent = invitee
+        ? "Hi, " + invitee
+        : "Hi, dear guest";
+    }
+
+    // isi nama di form RSVP kalau ada
+    if (rsvpNameInput && invitee) {
+      rsvpNameInput.value = invitee;
     }
   })();
 </script>
@@ -289,6 +295,51 @@
         }
       });
     }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const rsvpForm = document.getElementById("rsvp-form");
+    const statusEl = document.getElementById("rsvp-status");
+    const nameInput = document.getElementById("rsvp-name");
+
+    if (!rsvpForm) return;
+
+    rsvpForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const attendanceInput = rsvpForm.querySelector(
+        "input[name='attendance']:checked"
+      );
+
+      if (!attendanceInput) {
+        if (statusEl) {
+          statusEl.textContent =
+            "Pilih dulu: Akad, Ramah tamah, atau Keduanya 😊";
+        }
+        return;
+      }
+
+      const name = (nameInput && nameInput.value.trim()) || "Tamu";
+      const attendance = attendanceInput.value;
+
+      // GANTI dengan nomor WhatsApp kamu (tanpa +, pakai kode negara)
+      const phone = "6287759584511";
+
+      const text =
+        "Halo, saya " +
+        name +
+        ". Saya ingin konfirmasi kehadiran untuk: " +
+        attendance +
+        ".";
+
+      const waUrl =
+        "https://wa.me/" + phone + "?text=" + encodeURIComponent(text);
+
+      window.open(waUrl, "_blank");
+
+      if (statusEl) statusEl.textContent = "";
+    });
   });
 </script>
 
