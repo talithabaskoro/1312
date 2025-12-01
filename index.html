@@ -376,6 +376,59 @@
     });
   });
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("music-modal");
+    const btnYes = document.getElementById("music-yes");
+    const btnNo = document.getElementById("music-no");
+    const iframe = document.getElementById("wedding-music");
+
+    if (!modal || !btnYes || !btnNo || !iframe) return;
+
+    // GANTI VIDEO_ID dengan ID lagu YouTube kamu
+    // contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    const VIDEO_ID = "7_QydNXI";
+
+    // Supaya tidak tanya berulang kalau user sudah memilih (opsional, pakai localStorage)
+    const savedChoice = localStorage.getItem("wedding_music_choice");
+    if (savedChoice === "yes") {
+      startMusic(iframe, VIDEO_ID);
+      hideModal();
+      return;
+    } else if (savedChoice === "no") {
+      hideModal();
+      return;
+    }
+
+    btnYes.addEventListener("click", function () {
+      startMusic(iframe, VIDEO_ID);
+      localStorage.setItem("wedding_music_choice", "yes");
+      hideModal();
+    });
+
+    btnNo.addEventListener("click", function () {
+      localStorage.setItem("wedding_music_choice", "no");
+      hideModal();
+    });
+
+    function hideModal() {
+      modal.classList.add("music-modal--hidden");
+    }
+
+    function startMusic(iframeEl, videoId) {
+      // Autoplay + loop pelan di background
+      const params = [
+        "autoplay=1",
+        "controls=0",
+        "loop=1",
+        "playlist=" + videoId,
+        "modestbranding=1"
+      ].join("&");
+
+      iframeEl.src = "https://www.youtube.com/embed/" + videoId + "?" + params;
+    }
+  });
+</script>
 
 </body>
 </html>
