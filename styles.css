@@ -497,3 +497,75 @@ main,
     padding-inline: var(--space-3);
   }
 }
+/* === MUSIC MODAL === */
+
+.music-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  font-family: inherit;
+}
+
+.music-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.music-modal-content {
+  position: relative;
+  max-width: 24rem;
+  width: 90%;
+  background: #fff;
+  border-radius: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+  z-index: 1;
+  text-align: center;
+}
+
+.music-modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-family: "Playfair Display", "Times New Roman", serif;
+  font-size: var(--font-h3);
+}
+
+.music-modal-content p {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.music-modal-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* hidden player: kecil, tidak mengganggu layout */
+
+.music-player-hidden {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.music-player-hidden iframe {
+  width: 300px;
+  height: 0;
+}
+
+/* class helper untuk menyembunyikan modal */
+.music-modal--hidden {
+  display: none;
+}
+
