@@ -167,10 +167,24 @@ main,
 }
 
 @media (min-width: 768px) {
-  .section-guestbook {
-    padding-inline: var(--space-3);
+  .hero-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Teks sedikit diperkecil, foto dibesarkan */
+  .hero-text {
+    flex-basis: 55%;
+    text-align: left;
+  }
+
+  .hero-photo {
+    flex-basis: 45%;   /* tadinya 38.2% */
+    aspect-ratio: 3 / 4;
   }
 }
+
 
 /* Form styling */
 
