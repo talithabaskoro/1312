@@ -210,7 +210,11 @@
     allowfullscreen
   ></iframe>
 </div>
-
+<audio
+  id="wedding-audio"
+  src="audio/lagu.mp3"
+  preload="auto"
+></audio>
   <footer class="footer">
     <p>Dengan penuh kasih,</p>
     <p class="names-small">Talitha &amp; Baskoro</p>
@@ -381,52 +385,30 @@
     const modal = document.getElementById("music-modal");
     const btnYes = document.getElementById("music-yes");
     const btnNo = document.getElementById("music-no");
-    const iframe = document.getElementById("wedding-music");
+    const audio = document.getElementById("wedding-audio");
 
-    if (!modal || !btnYes || !btnNo || !iframe) return;
-
-    // GANTI VIDEO_ID dengan ID lagu YouTube kamu
-    // contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-    const VIDEO_ID = "7_QydNXI_ok";
-
-    // Supaya tidak tanya berulang kalau user sudah memilih (opsional, pakai localStorage)
-    const savedChoice = localStorage.getItem("wedding_music_choice");
-    if (savedChoice === "yes") {
-      startMusic(iframe, VIDEO_ID);
-      hideModal();
-      return;
-    } else if (savedChoice === "no") {
-      hideModal();
+    if (!modal || !btnYes || !btnNo || !audio) {
+      console.log("Music elements not found");
       return;
     }
-
-    btnYes.addEventListener("click", function () {
-      startMusic(iframe, VIDEO_ID);
-      localStorage.setItem("wedding_music_choice", "yes");
-      hideModal();
-    });
-
-    btnNo.addEventListener("click", function () {
-      localStorage.setItem("wedding_music_choice", "no");
-      hideModal();
-    });
 
     function hideModal() {
       modal.classList.add("music-modal--hidden");
     }
 
-    function startMusic(iframeEl, videoId) {
-      // Autoplay + loop pelan di background
-      const params = [
-        "autoplay=1",
-        "controls=0",
-        "loop=1",
-        "playlist=" + videoId,
-        "modestbranding=1"
-      ].join("&");
+    btnYes.addEventListener("click", function () {
+      audio.loop = true;           // ulang terus
+      audio.volume = 0.6;          // bisa atur volume (0–1)
+      audio.play().catch(function (err) {
+        console.log("Audio play error:", err);
+      });
+      hideModal();
+    });
 
-      iframeEl.src = "https://www.youtube.com/embed/" + videoId + "?" + params;
-    }
+    btnNo.addEventListener("click", function () {
+      audio.pause();
+      hideModal();
+    });
   });
 </script>
 
