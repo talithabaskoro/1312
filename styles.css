@@ -348,6 +348,70 @@ main,
   text-align: center;
 }
 
+.rsvp-form {
+  margin-top: var(--space-2);
+  max-width: 26rem;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.rsvp-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.rsvp-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+/* Biar radio button ikut warna emas */
+.rsvp-options input[type="radio"] {
+  accent-color: var(--accent);
+}
+
+.rsvp-status {
+  margin-top: 0.5rem;
+  font-size: var(--font-small);
+  color: var(--muted);
+}
+
+.field-group {
+  margin-bottom: 0.9rem;
+}
+
+.field-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: calc(var(--font-base) / var(--phi));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field-group input,
+.field-group textarea {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.7rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fff;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(201, 161, 91, 0.18);
+}
+
+
 /* Footer */
 
 .footer {
