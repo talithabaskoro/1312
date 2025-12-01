@@ -93,25 +93,46 @@
       </ul>
     </section>
 
-    <section id="rsvp" class="section section-rsvp">
-      <h2>RSVP</h2>
-      <p>
-        Konfirmasi kehadiran maksimal pada 10 Desember 2025.
-      </p>
+   <section id="rsvp" class="section section-rsvp">
+  <h2>RSVP</h2>
+  <p class="intro">
+    Mohon konfirmasi kehadiran untuk akad, ramah tamah, atau keduanya.
+  </p>
 
-      <!-- Option 1: WhatsApp link -->
-      <a class="btn-primary"
-         href="https://wa.me/6287759584511?text=Halo%20Talitha%20dan%20Baskoro,%20Aku%20mau%20konfirmasi%20kehadiran%20ke%20acara%20pernikahan%20kalian."
-         target="_blank">
-        RSVP via WhatsApp
-      </a>
+  <form id="rsvp-form" class="rsvp-form">
+    <div class="field-group">
+      <label for="rsvp-name">Nama</label>
+      <input
+        id="rsvp-name"
+        name="name"
+        type="text"
+        placeholder="Nama kamu"
+      />
+    </div>
 
-      <!-- Option 2: Google Form
-      <a class="btn-outline" href="https://forms.gle/your-form-id" target="_blank">
-        RSVP via Google Form
-      </a>
-      -->
-    </section>
+    <div class="field-group">
+      <label>Keikutsertaan</label>
+      <div class="rsvp-options">
+        <label>
+          <input type="radio" name="attendance" value="Akad saja" required />
+          Akad saja
+        </label>
+        <label>
+          <input type="radio" name="attendance" value="Ramah tamah saja" />
+          Ramah tamah saja
+        </label>
+        <label>
+          <input type="radio" name="attendance" value="Akad dan ramah tamah" />
+          Keduanya (akad &amp; ramah tamah)
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">Kirim via WhatsApp</button>
+    <p id="rsvp-status" class="rsvp-status" aria-live="polite"></p>
+  </form>
+</section>
+
   </main>
 <section id="guestbook" class="section section-guestbook">
   <h2>Ucapan &amp; Doa</h2>
